@@ -1,5 +1,5 @@
 module Spree
-  class Calculator::CorreiosBaseCalculator < Calculator
+  class Calculator::CorreiosBaseCalculator < Spree::ShippingCalculator
     preference :zipcode, :string
     preference :token, :string
     preference :password, :string
@@ -8,8 +8,8 @@ module Spree
     preference :receive_in_hands, :boolean, default: false
     
     attr_reader :delivery_time
-    
-    def compute(object)
+
+    def compute_package(object)
       return unless object.present? and object.line_items.present?
       order = object.is_a?(Spree::Order) ? object : object.order
       
