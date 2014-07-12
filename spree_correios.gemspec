@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_correios'
-  s.version     = '2.3.1'
+  s.version     = '2.3.2.beta'
   s.summary     = %q{A spree extensions to add Brazil's Correio calculators}
   s.required_ruby_version = '>= 1.9.2'
 
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '>= 2.3.2'
+  s.add_dependency 'spree_core', '>= 2.3.2.beta'
   s.add_dependency 'correios-frete', '~> 1.9.1'
 
   s.add_development_dependency 'capybara'
