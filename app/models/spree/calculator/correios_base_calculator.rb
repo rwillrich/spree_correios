@@ -33,14 +33,16 @@ module Spree
         c.codigo_empresa = preferred_token if preferred_token.present?
         c.senha = preferred_password if preferred_password.present?
       end
-      
-      webservice = calculator.calculate(shipping_method)
-      return 0.0 if webservice.erro?
-      @delivery_time = webservice.prazo_entrega
-      webservice.valor
-    rescue 0.0
+      begin
+        webservice = calculator.calculate(shipping_method)
+        return 0.0 if webservice.erro?
+        @delivery_time = webservice.prazo_entrega
+        webservice.valor
+      rescue Exception => e
+        0.0
+      end
     end
-    
+
     def available?(order)
       !compute(order).zero?
     end
