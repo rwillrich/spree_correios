@@ -39,6 +39,7 @@ module Spree
         @delivery_time = webservice.prazo_entrega
         webservice.valor
       rescue Exception => e
+        puts e.message 
         0.0
       end
     end
