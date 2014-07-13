@@ -4,6 +4,10 @@ module SpreeCorreios
     isolate_namespace Spree
     engine_name 'spree_correios'
 
+    initializer "spree.register.correios_calculator", after: "spree.register.calculators" do |app|
+      app.config.spree.calculators.shipping_methods += [Spree::Calculator::SEDEX, Spree::Calculator::PAC, Spree::Calculator::SEDEX10]
+    end
+
     # use rspec for tests
     config.generators do |g|
       g.test_framework :rspec
