@@ -23,13 +23,13 @@ module Spree
         package.add_item(package_item)
       end
       
-      calculator = ::Correios::Frete::Calculador.new do |c| 
+      calculator = ::Correios::Frete::Calculador.new do |c|
         c.cep_origem = preferred_zipcode
         c.cep_destino = order.ship_address.zipcode
         c.encomenda = package
-        c.valor_declarado = order.amount.to_f if prefers?(:declared_value)
-        c.mao_propria = prefers?(:receive_in_hands)
-        c.aviso_recebimento = prefers?(:receipt_notification)
+        c.valor_declarado = order.amount.to_f if preferred_declared_value
+        c.mao_propria = preferred_receive_in_hands
+        c.aviso_recebimento = preferred_receipt_notification
         c.codigo_empresa = preferred_token if preferred_token.present?
         c.senha = preferred_password if preferred_password.present?
       end
@@ -39,8 +39,8 @@ module Spree
         @delivery_time = webservice.prazo_entrega
         webservice.valor
       rescue Exception => e
-        puts e.message 
-        0.0
+        puts e.message
+        0
       end
     end
 

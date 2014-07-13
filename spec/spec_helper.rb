@@ -53,7 +53,7 @@ RSpec.configure do |config|
   # config.mock_with :rr
   config.mock_with :rspec
   config.color = true
-
+  config.infer_spec_type_from_file_location!
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -66,12 +66,6 @@ RSpec.configure do |config|
   config.before :suite do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
-  end
-
-  # Before each spec check if it is a Javascript test and switch between using database transactions or not where necessary.
-  config.before :each do
-    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
-    DatabaseCleaner.start
   end
 
   # After each spec clean the database.
