@@ -6,23 +6,23 @@ module Spree
     preference :declared_value, :boolean, default: false
     preference :receipt_notification, :boolean, default: false
     preference :receive_in_hands, :boolean, default: false
-    
+
     attr_reader :delivery_time
 
     def compute_package(object)
       return unless object.present?
       order = object.is_a?(Spree::Order) ? object : object.order
-      
+
       package = ::Correios::Frete::Pacote.new
       order.line_items.map do |item|
-        weight = item.product.weight.to_f
-        depth  = item.product.depth.to_f
-        width  = item.product.width.to_f
-        height = item.product.height.to_f
+        weight = item.variant.weight ? item.variant.weight.to_f : item.product.weight.to_f
+        depth  = item.variant.depth ? item.variant.depth.to_f : item.product.depth.to_f
+        width  = item.variant.width ? item.variant.width.to_f : item.product.width.to_f
+        height = item.variant.height ? item.variant.height.to_f : item.product.height.to_f
         package_item = ::Correios::Frete::PacoteItem.new(peso: weight, comprimento: depth, largura: width, altura: height)
         package.add_item(package_item)
       end
-      
+
       calculator = ::Correios::Frete::Calculador.new do |c|
         c.cep_origem = preferred_zipcode
         c.cep_destino = order.ship_address.zipcode
@@ -47,7 +47,7 @@ module Spree
     def available?(order)
       !compute(order).zero?
     end
-    
+
     def has_contract?
       preferred_token.present? && preferred_password.present?
     end
